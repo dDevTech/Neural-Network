@@ -1,0 +1,6 @@
+package neuralNetwork;
+
+public class DataSet {
+	public double[]inputValues;
+	public double[]desiredOutputs;
+}

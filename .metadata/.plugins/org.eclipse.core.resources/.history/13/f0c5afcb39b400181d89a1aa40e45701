@@ -1,0 +1,16 @@
+package neuralNetwork;
+
+import java.util.Random;
+
+public class Weight {
+public static Random random = new Random();
+public Weight(int numberOfWeights) {
+	initialize(numberOfWeights);
+}
+public void initialize(int numberOfNeurons) {
+	for(int i=0;i<numberOfNeurons;i++) {
+
+	}
+	
+}
+}

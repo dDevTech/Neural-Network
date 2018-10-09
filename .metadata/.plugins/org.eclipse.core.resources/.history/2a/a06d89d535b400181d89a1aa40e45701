@@ -1,0 +1,9 @@
+package neuralNetwork;
+
+public class Neuron {
+	private float bias=0;
+	private float netValue=0;
+	public Neuron() {
+		
+	}
+}

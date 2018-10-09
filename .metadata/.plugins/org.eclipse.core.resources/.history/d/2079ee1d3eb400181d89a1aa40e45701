@@ -1,0 +1,15 @@
+package main;
+
+import neuralNetwork.NeuralNetwork;
+
+public class Main {
+
+	public static void main(String[] args) {
+		int[]neuronsStructure= {10,5,5,10};
+		double[]values= {0,0,0,1,1,0,1,1,1,0};
+		NeuralNetwork nn = new NeuralNetwork(neuronsStructure);
+		nn.feedForward();
+		nn.printNetwork();
+	}
+
+}

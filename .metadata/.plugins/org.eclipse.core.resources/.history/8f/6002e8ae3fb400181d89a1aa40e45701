@@ -1,0 +1,12 @@
+package neuralNetwork;
+
+public class DataSet {
+	public double[]inputValues;
+	private double[]desiredOutputs;
+	public double[] çgetDesiredOutputs() {
+		return desiredOutputs;
+	}
+	public void setDesiredOutputs(double[] desiredOutputs) {
+		this.desiredOutputs = desiredOutputs;
+	}
+}

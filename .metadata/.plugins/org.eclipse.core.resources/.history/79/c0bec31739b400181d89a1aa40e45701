@@ -1,0 +1,16 @@
+package neuralNetwork;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Neuron {
+	private double bias=0;
+	private double netValue=0;
+	private double outValue=0;
+	private ArrayList<Weight>inputWeights= new ArrayList<>();
+	private ArrayList<Weight>outputWeights= new ArrayList<>();
+	public Neuron(double value) {
+		this.netValue=value;
+	}
+
+}

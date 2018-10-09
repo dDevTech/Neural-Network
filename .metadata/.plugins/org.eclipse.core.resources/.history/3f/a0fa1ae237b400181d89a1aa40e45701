@@ -1,0 +1,16 @@
+package neuralNetwork;
+
+import java.util.Random;
+
+public class Neuron {
+	private float bias=0;
+	private float netValue=0;
+	private float outValue=0;
+	
+	public Neuron() {
+		
+	}
+	public void initialize() {
+
+	}
+}

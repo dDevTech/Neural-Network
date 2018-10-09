@@ -1,0 +1,7 @@
+package layer;
+
+public class Layer {
+	public Layer() {
+		
+	}
+}

@@ -1,0 +1,27 @@
+package neuralNetwork;
+
+import java.util.Random;
+
+public class Weight {
+	private double value;
+	public static int MAX_VALUE=0;
+	public static Random random = new Random();
+
+	public Weight() {
+		initialize();
+	}
+
+	public void initialize() {
+		value = Weight.random.nextGaussian() * 0.01f;
+
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+	
+}

@@ -1,0 +1,7 @@
+package math;
+
+public class Matrix2D {
+	public Matrix2D(int columns,int rows) {
+		
+	}
+}

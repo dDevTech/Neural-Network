@@ -1,0 +1,15 @@
+package neuralNetwork;
+
+public class Weight {
+
+public Weight(int numberOfWeights) {
+	initialize(numberOfWeights);
+}
+public void initialize(int numberOfNeurons) {
+	for(int i=0;i<numberOfNeurons;i++) {
+		double value=random.nextGaussian()*0.01f;
+		neurons.add(new Neuron(value));
+	}
+	
+}
+}

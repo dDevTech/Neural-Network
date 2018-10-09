@@ -1,0 +1,16 @@
+package layer;
+
+import java.util.ArrayList;
+
+public class NetworkStructure extends ArrayList<Layer> {
+	private InputLayer inputLayer;
+	private OutputLayer outputLayer;
+	private ArrayList<HiddenLayer>hiddenLayers;
+	public NetworkStructure(InputLayer input,OutputLayer output,HiddenLayer[]hidden) {
+		this.inputLayer=input;
+		this.outputLayer=output;
+		for(int i=0;i<hidden.length;i++) {
+			hiddenLayers.add(hidden[i]);
+		}
+	}
+}

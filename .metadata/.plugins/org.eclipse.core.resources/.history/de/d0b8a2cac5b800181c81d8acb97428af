@@ -1,0 +1,14 @@
+package myGame;
+
+public class PhysicsTestHelper {
+public static void createPhysicsTestWorld() {
+	Geometry floor_geo = new Geometry("Floor", floor);
+    floor_geo.setMaterial(floor_mat);
+    floor_geo.setLocalTranslation(0, -0.1f, 0);
+    this.rootNode.attachChild(floor_geo);
+    /* Make the floor physical with mass 0.0f! */
+    floor_phy = new RigidBodyControl(0.0f);
+    floor_geo.addControl(floor_phy);
+    bulletAppState.getPhysicsSpace().add(floor_phy);
+}
+}

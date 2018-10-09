@@ -1,0 +1,17 @@
+package neuralNetwork;
+
+import java.util.Random;
+
+public class Weight {
+private double value;
+public static Random random = new Random();
+public Weight(int numberOfWeights) {
+	initialize(numberOfWeights);
+}
+public void initialize(int numberOfWeights) {
+	for(int i=0;i<numberOfWeights;i++) {
+		value=Weight.random.nextGaussian()*0.01f;
+	}
+	
+}
+}

@@ -1,0 +1,11 @@
+package math;
+
+public class Matrix {
+	private int columns;
+	private int rows;
+	public Matrix(int columns,int rows) {
+		this.columns = columns;
+		this.rows = rows;
+		
+	}
+}

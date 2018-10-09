@@ -1,0 +1,14 @@
+package layer;
+
+import java.util.ArrayList;
+
+import neuralNetwork.Neuron;
+
+public class Layer {
+	ArrayList<Neuron>neurons = new ArrayList<>();
+	public Layer(int numberOfNeurons) {
+		for(int i=0;i<neurons.size();i++) {
+			
+		}
+	}
+}

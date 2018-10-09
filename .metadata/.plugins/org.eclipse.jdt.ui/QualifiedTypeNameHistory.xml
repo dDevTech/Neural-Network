@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="layer.Layer"/>
+<fullyQualifiedTypeName name="layer.NetwokStructure"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="math.Matrix2D"/>
+<fullyQualifiedTypeName name="neuralNetwork.NeuralNetwork"/>
+<fullyQualifiedTypeName name="neuralNetwork.Neuron"/>
+<fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
+<fullyQualifiedTypeName name="neuralNetwork.DataSet"/>
+<fullyQualifiedTypeName name="java.lang.ArrayIndexOutOfBoundsException"/>
+<fullyQualifiedTypeName name="neuralNetwork.Weight"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="layer.OutputLayer"/>
+<fullyQualifiedTypeName name="layer.HiddenLayer"/>
+<fullyQualifiedTypeName name="layer.InputLayer"/>
+<fullyQualifiedTypeName name="java.awt.print.Printable"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
+<fullyQualifiedTypeName name="org.jfree.data.general.PieDataset"/>
+<fullyQualifiedTypeName name="org.jfree.data.general.DefaultPieDataset"/>
+<fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="org.jfree.data.category.DefaultCategoryDataset"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartPanel"/>
+<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="org.jfree.ui.ApplicationFrame"/>
+<fullyQualifiedTypeName name="com.jme3.scene.Geometry"/>
+</qualifiedTypeNameHistroy>

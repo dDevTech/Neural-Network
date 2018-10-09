@@ -1,0 +1,7 @@
+package myGame;
+
+public class PhysicsTestHelper {
+public static void createPhysicsTestWorld() {
+	
+}
+}

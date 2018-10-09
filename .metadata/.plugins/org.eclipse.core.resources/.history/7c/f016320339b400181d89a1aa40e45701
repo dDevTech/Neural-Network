@@ -1,0 +1,14 @@
+package neuralNetwork;
+
+import java.util.Random;
+
+public class Neuron {
+	private double bias=0;
+	private double netValue=0;
+	private double outValue=0;
+	
+	public Neuron(double value) {
+		this.netValue=value;
+	}
+
+}

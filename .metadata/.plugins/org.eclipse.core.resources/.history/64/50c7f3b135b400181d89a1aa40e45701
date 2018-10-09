@@ -1,0 +1,10 @@
+package layer;
+
+import java.util.ArrayList;
+
+public class Layer {
+	ArrayList<Neuron>neurons = new ArrayList<>();
+	public Layer() {
+		
+	}
+}

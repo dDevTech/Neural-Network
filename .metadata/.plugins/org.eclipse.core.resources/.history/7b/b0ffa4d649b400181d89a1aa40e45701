@@ -1,0 +1,299 @@
+package neuralNetwork;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.xml.crypto.Data;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.ApplicationFrame;
+
+import layer.HiddenLayer;
+import layer.InputLayer;
+import layer.Layer;
+import layer.OutputLayer;
+
+public class NeuralNetwork {
+	private float learningRate = 0.5f;
+	private int maxEpochs = 1000;
+	private int miniBatch = 20;
+
+	private InputLayer inputLayer;
+	private OutputLayer outputLayer;
+	private ArrayList<HiddenLayer> hiddenLayers = new ArrayList<>();
+
+	public NeuralNetwork(int[] arrayNeurons) {
+		initialize(arrayNeurons);
+	}
+
+	public double sigmoid(double netValue) {
+		return 1 / (1 + Math.pow(Math.E, -netValue));
+	}
+
+	public double derivativeSigmoid(double outValue) {
+		return outValue * (1 - outValue);
+	}
+
+	public void initialize(int[] arrayNeurons) {
+		int inputNeurons = arrayNeurons[0];
+		int outputNeurons = arrayNeurons[arrayNeurons.length - 1];
+		InputLayer inputs = new InputLayer(inputNeurons);
+
+		OutputLayer outputs = new OutputLayer(outputNeurons);
+		this.inputLayer = inputs;
+		this.outputLayer = outputs;
+		for (int i = 1; i < arrayNeurons.length - 1; i++) {
+			hiddenLayers.add(new HiddenLayer(arrayNeurons[i]));
+		}
+		HiddenLayer firstHidden = hiddenLayers.get(0);
+		for (Neuron neuron : inputLayer.getNeurons()) {
+			for (int i = 0; i < firstHidden.getNeurons().size(); i++) {
+				neuron.getOutputWeights().add(new Weight());
+			}
+		}
+		for (HiddenLayer hidden : hiddenLayers) {
+			if (hiddenLayers.indexOf(hidden) == hiddenLayers.size() - 1) {
+				for (Neuron neuron : hidden.getNeurons()) {
+					for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
+						neuron.getOutputWeights().add(new Weight());
+					}
+				}
+			} else {
+				for (Neuron neuron : hidden.getNeurons()) {
+					for (int i = 0; i < hiddenLayers.get(hiddenLayers.indexOf(hidden) + 1).getNeurons().size(); i++) {
+						neuron.getOutputWeights().add(new Weight());
+					}
+				}
+			}
+		}
+	}
+
+	public void printNetwork() {
+		System.out.println("@INPUT LAYER");
+		System.out.println();
+		for (Neuron neuron : inputLayer.getNeurons()) {
+			System.out.println("###Neuron: " + neuron.getOutValue());
+			neuron.printWeights();
+		}
+		System.out.println();
+		System.out.println("@HIDDEN LAYER");
+
+		for (HiddenLayer hiddenLayer : hiddenLayers) {
+			System.out.println();
+			System.out.println("   $LAYER");
+			System.out.println();
+			for (Neuron neuron : hiddenLayer.getNeurons()) {
+				System.out.println("###Neuron: " + neuron.getOutValue());
+				neuron.printWeights();
+			}
+		}
+		System.out.println();
+		System.out.println("@OUTPUT LAYER");
+		System.out.println();
+		for (Neuron neuron : outputLayer.getNeurons()) {
+			System.out.println("###Neuron: " + neuron.getOutValue());
+			neuron.printWeights();
+		}
+	}
+
+	public void train(ArrayList<DataSet> datasets) {
+		 DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+	
+	  
+		for (int j = 0; j < maxEpochs; j++) {
+			
+			for (DataSet dataSet : datasets) {
+
+				double sumError = 0;
+				feedForward(dataSet.getInputValues());
+				for (int i = 0; i < dataSet.getDesiredOutputs().length; i++) {
+					double distanceError = (dataSet.getDesiredOutputs()[i]
+							- getOutputLayer().getNeurons().get(i).getOutValue());
+					double error = (distanceError * distanceError);
+					sumError += error;
+				}
+				sumError = 1 / 2f * (datasets.size()) * sumError;
+				dataset.addValue( sumError , Double.toString(j), Double.toString(sumError) );
+				System.out.println(sumError);
+				backPropagation(dataSet.getDesiredOutputs());
+			}
+
+		}
+		JFreeChart lineChart=ChartFactory.createLineChart("Gradient Descent", "Error", "Epochs", dataset, PlotOrientation.VERTICAL, true, true, false);
+	    ChartPanel chartPanel = new ChartPanel( lineChart );
+	     chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+	    ApplicationFrame f = new ApplicationFrame("Gradient descent");
+	   f.setContentPane( chartPanel );
+	   f.pack();
+	   f.setVisible(true);
+	 
+	}
+
+	public double[] feedForward(double[] inputValues) {
+		double[] outValues=new double[outputLayer.getNeurons().size()];
+		
+		ArrayList<Neuron> inputNeurons = inputLayer.getNeurons();
+		for (int i = 0; i < inputNeurons.size(); i++) {
+			inputNeurons.get(i).setNetValue(inputValues[i]);
+			inputNeurons.get(i).setOutValue(inputValues[i]);
+		}
+		for (int i = 0; i < hiddenLayers.size(); i++) {
+			HiddenLayer layer = hiddenLayers.get(i);
+			for (int j = 0; j < layer.getNeurons().size(); j++) {
+				if (i == 0) {
+					for (Neuron n : inputLayer.getNeurons()) {
+						double value = n.getOutValue() * n.getOutputWeights().get(j).getValue();
+						layer.getNeurons().get(j).setNetValue(value);
+						layer.getNeurons().get(j).setOutValue(sigmoid(value));
+					}
+				} else {
+					for (Neuron n : hiddenLayers.get(i - 1).getNeurons()) {
+						double value = n.getOutValue() * n.getOutputWeights().get(j).getValue();
+						layer.getNeurons().get(j).setNetValue(value);
+						layer.getNeurons().get(j).setOutValue(sigmoid(value));
+					}
+				}
+			}
+
+		}
+		ArrayList<Neuron> outputNeurons = outputLayer.getNeurons();
+		for (int i = 0; i < outputNeurons.size(); i++) {
+			for (Neuron n : hiddenLayers.get(hiddenLayers.size() - 1).getNeurons()) {
+				double value = n.getOutValue() * n.getOutputWeights().get(i).getValue();
+				outputLayer.getNeurons().get(i).setNetValue(value);
+				outputLayer.getNeurons().get(i).setOutValue(sigmoid(value));
+				outValues[i]=outputLayer.getNeurons().get(i).getOutValue();
+			}
+		}
+		return outValues;
+	}
+
+	public void backPropagation(double[] outputValues) {
+		for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
+			double neuronValue = outputLayer.getNeurons().get(i).getOutValue();
+			double sensibility = -(outputValues[i] - neuronValue) * derivativeSigmoid(neuronValue);
+			HiddenLayer lastLayer = hiddenLayers.get(hiddenLayers.size() - 1);
+			outputLayer.getNeurons().get(i).setSensibility(sensibility);
+			for (int j = 0; j < lastLayer.getNeurons().size(); j++) {
+				Weight w = lastLayer.getNeurons().get(j).getOutputWeights().get(i);
+
+				double variation = sensibility * lastLayer.getNeurons().get(j).getOutValue();
+
+				w.setValue(w.getValue() - learningRate * variation);
+			}
+		}
+		for (int i = hiddenLayers.size() - 1; i >= 0; i--) {
+			ArrayList<Neuron> neurons = hiddenLayers.get(i).getNeurons();
+			if (i == hiddenLayers.size() - 1) {
+				OutputLayer previousLayer = outputLayer;
+				HiddenLayer nextLayer = hiddenLayers.get(i - 1);
+
+				for (int j = 0; j < neurons.size(); j++) {
+					double sumSensibility = 0;
+					for (int k = 0; k < previousLayer.getNeurons().size(); k++) {
+						double value = previousLayer.getNeurons().get(k).getSensibility()
+								* neurons.get(j).getOutputWeights().get(k).getValue();
+						double sensibility = value * derivativeSigmoid(neurons.get(i).getOutValue());
+						sumSensibility += sensibility;
+					}
+					neurons.get(i).setSensibility(sumSensibility);
+					for (Neuron n : nextLayer.getNeurons()) {
+						double variation = neurons.get(i).getSensibility() * n.getOutValue();
+
+						Weight w = n.getOutputWeights().get(j);
+						w.setValue(w.getValue() - learningRate * variation);
+					}
+				}
+			} else if (i != 0) {
+				HiddenLayer previousLayer = hiddenLayers.get(i + 1);
+				HiddenLayer nextLayer = hiddenLayers.get(i - 1);
+
+				for (int j = 0; j < neurons.size(); j++) {
+					double sumSensibility = 0;
+					for (int k = 0; k < previousLayer.getNeurons().size(); k++) {
+						double value = previousLayer.getNeurons().get(k).getSensibility()
+								* neurons.get(j).getOutputWeights().get(k).getValue();
+						double sensibility = value * derivativeSigmoid(neurons.get(i).getOutValue());
+						sumSensibility += sensibility;
+					}
+					neurons.get(i).setSensibility(sumSensibility);
+					for (Neuron n : nextLayer.getNeurons()) {
+						double variation = neurons.get(i).getSensibility() * n.getOutValue();
+
+						Weight w = n.getOutputWeights().get(j);
+						w.setValue(w.getValue() - learningRate * variation);
+					}
+				}
+			} else {
+				HiddenLayer previousLayer = hiddenLayers.get(i + 1);
+				InputLayer nextLayer = inputLayer;
+
+				for (int j = 0; j < neurons.size(); j++) {
+					double sumSensibility = 0;
+					for (int k = 0; k < previousLayer.getNeurons().size(); k++) {
+						double value = previousLayer.getNeurons().get(k).getSensibility()
+								* neurons.get(j).getOutputWeights().get(k).getValue();
+						double sensibility = value * derivativeSigmoid(neurons.get(i).getOutValue());
+						sumSensibility += sensibility;
+					}
+					neurons.get(i).setSensibility(sumSensibility);
+					for (Neuron n : nextLayer.getNeurons()) {
+						double variation = neurons.get(i).getSensibility() * n.getOutValue();
+
+						Weight w = n.getOutputWeights().get(j);
+						w.setValue(w.getValue() - learningRate * variation);
+					}
+				}
+			}
+
+		}
+
+	}
+
+	public InputLayer getInputLayer() {
+		return inputLayer;
+	}
+
+	public void setInputLayer(InputLayer inputLayer) {
+		this.inputLayer = inputLayer;
+	}
+
+	public OutputLayer getOutputLayer() {
+		return outputLayer;
+	}
+
+	public void setOutputLayer(OutputLayer outputLayer) {
+		this.outputLayer = outputLayer;
+	}
+
+	public ArrayList<HiddenLayer> getHiddenLayers() {
+		return hiddenLayers;
+	}
+
+	public float getLearningRate() {
+		return learningRate;
+	}
+
+	public void setLearningRate(float learningRate) {
+		this.learningRate = learningRate;
+	}
+
+	public int getMaxEpochs() {
+		return maxEpochs;
+	}
+
+	public void setMaxEpochs(int maxEpochs) {
+		this.maxEpochs = maxEpochs;
+	}
+
+	public void setHiddenLayers(ArrayList<HiddenLayer> hiddenLayers) {
+		this.hiddenLayers = hiddenLayers;
+	}
+
+}
